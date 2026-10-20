@@ -1,64 +1,134 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400"></a></p>
+# SunFresh: Agricultural Products E-commerce Website
 
-<p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+An online store for clean agricultural products (vegetables, fruit, meat, seafood), built as a university capstone project. The focus of the project is **requirements analysis and system design**: from business analysis, use cases and process flows to database design and a working Laravel web application.
 
-## About Laravel
+> Course project at Ho Chi Minh City University of Industry and Trade (HUIT), supervised by Phan Thi Ngoc Mai. Team of 3.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+![Product listing page](docs/images/product-listing.jpg)
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## At a glance
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+| | |
+|---|---|
+| User roles | 3 (Admin, Staff, Customer) |
+| Functional modules | 11 |
+| Use case specifications | 19 |
+| Use case diagrams | 11 |
+| Activity diagrams | 19 |
+| Sequence diagrams | 19 |
+| Database tables | 18 |
+| Payment | VNPay (online, with OTP verification) and cash on delivery |
 
-## Learning Laravel
+## Features
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+### Customer
+- Register with email activation (activation link expires after 60 minutes), log in, reset password, change email, edit profile, manage delivery addresses
+- Browse products by category, search by name, filter by price range, sort by newest/oldest
+- Cart, checkout with shipping fee based on distance, promotion applied to the cart
+- Pay online with VNPay (OTP verification) or cash on delivery; order confirmation email
+- Order history and order details, cancel an unconfirmed order, **reorder** a previous order
+- **Return request**: choose the items to return, give a reason with images and video; items outside the return window or not returnable are shown separately
+- Rate and comment on products
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 1500 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+### Staff
+- Process orders through the lifecycle: pending, packing, shipping, delivered
+- Update delivery status; pick up returned goods and complete refunds
 
-## Laravel Sponsors
+### Admin
+- Manage products (add/edit with image upload), customers and staff (search, sort, lock/unlock accounts)
+- Manage promotions and apply them to the cart
+- Goods receipt (import notes) with automatic stock update, out-of-stock and near-expiry notifications
+- Assign deliveries; review and approve return requests
+- Role-based permission management
+- Revenue statistics by day, week, month and year; best-selling and highest-profit products; Excel export
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+![Return request screen](docs/images/return-request.jpg)
 
-### Premium Partners
+## Business rules (examples)
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
-- **[Lendio](https://lendio.com)**
+| Rule | Value |
+|---|---|
+| Product price | Must be a multiple of 1,000 VND |
+| Product name | Must be unique |
+| Product image | Up to 2 MB |
+| Return window | 0 to 7 days after delivery |
+| Account activation link | Expires after 60 minutes |
+| Cancel an order | Only while it is not yet confirmed |
+| Return an order | Only when the status is "delivered successfully" |
 
-## Contributing
+## System analysis and design
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+The analysis package covers the full path from business need to implementation:
 
-## Code of Conduct
+1. **Requirements**: functional and non-functional requirements for the three roles and 11 modules
+2. **Use cases**: 11 use case diagrams and 19 detailed specifications (priority, preconditions, main and alternative flows, postconditions)
+3. **Business processes**: registration/login and the ordering process
+4. **Behavior models**: 19 activity diagrams and 19 sequence diagrams
+5. **Database design**: ERD, CDM and a data dictionary for 18 tables (types, keys, constraints)
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+| Use case overview | ERD |
+|---|---|
+| ![Use case overview](docs/images/use-case-overview.jpg) | ![ERD](docs/images/erd.jpg) |
 
-## Security Vulnerabilities
+![Order process](docs/images/order-process.jpg)
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+## Tech stack
+
+- **Backend:** PHP, Laravel (MVC, routing, Blade templates, middleware)
+- **Database:** MySQL
+- **Frontend:** HTML, CSS, JavaScript, Bootstrap
+- **Payment:** VNPay sandbox
+- **Modeling:** UML (use case, activity, sequence), ERD/CDM
+
+## Getting started
+
+> Adjust these steps to match the repository (database dump or seeders, PHP version, VNPay and mail settings).
+
+```bash
+# 1. Clone the repository
+git clone <repository-url>
+cd <project-folder>
+
+# 2. Install dependencies
+composer install
+
+# 3. Configure the environment
+cp .env.example .env
+php artisan key:generate
+# Set DB_DATABASE, DB_USERNAME, DB_PASSWORD in .env
+# Set the mail settings (activation and order emails) and the VNPay sandbox keys in .env
+
+# 4. Create the database and tables
+php artisan migrate --seed
+
+# 5. Run the application
+php artisan serve
+```
+
+Open `http://127.0.0.1:8000` in your browser.
+
+## Team and my contribution
+
+| Member | Role |
+|---|---|
+| **Pham Minh Nhut** | Business analysis, database analysis and creation, project planning and task assignment, plus the features listed below |
+| Nguyen Nhat Linh | Authentication, account, order management, returns and reorder, expiry notification and stock deduction |
+| Lu Gia Huy | CDM, staff and customer management, order history, promotions, goods receipt, permissions, VNPay payment, testing |
+
+**What I did:**
+- Led the business analysis for both the admin site and the customer site, planned the project and split tasks across the team
+- Analyzed the database and created the MySQL tables with primary keys, foreign keys and constraints
+- Built product management (add and edit), the customer product browsing pages and the purchase (checkout) flow
+- Built product reviews and comments
+- Built revenue statistics and best-selling product reports
+- Extended promotion management and added applying promotions to the cart
+
+## Lessons learned
+
+- Writing use case specifications with exact preconditions and alternative flows first made implementation and testing much easier
+- Business rules (price format, return window, expiry of links) are best written down early, because they decide validations in several modules
+- Splitting work by module only works when the data model is agreed first
 
 ## License
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+This project was created for educational purposes.
